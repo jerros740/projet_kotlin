@@ -7,17 +7,19 @@ import java.net.HttpURLConnection
 import java.net.URL
 
 @RequiresApi(Build.VERSION_CODES.N)
-class Joke()
+class Joke(name: String)
 {
     private val url = "https://api.chucknorris.io/jokes/random"
     private var jsonJoke = JSONObject()
+    private var value = ""
     init
     {
-        init()
+        value = name
+
     }
 
     @RequiresApi(Build.VERSION_CODES.N)
-    fun init()
+    private fun init()
     {
         val thread = Thread {
             try {
@@ -26,15 +28,16 @@ class Joke()
                 with(url.openConnection() as HttpURLConnection)
                 {
                     requestMethod = "GET"
-
                     var str = ""
                     inputStream.bufferedReader().use {
                         it.lines().forEach { line ->
+                            println(line)
                             str += line
                         }
                     }
                     // Conversion de la string reçu en JSON
                     jsonJoke = JSONObject(str)
+
                 }
             }
             catch (e: Exception)
@@ -58,5 +61,10 @@ class Joke()
     fun value(): Any
     {
         return jsonJoke.get("value")
+    }
+
+    fun name(): String
+    {
+        return value
     }
 }
