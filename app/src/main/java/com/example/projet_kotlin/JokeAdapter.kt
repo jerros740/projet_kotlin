@@ -35,7 +35,7 @@ class JokeAdapter(jokes :List<Joke>, context: Context) : RecyclerView.Adapter<Jo
 
     @RequiresApi(Build.VERSION_CODES.N)
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
-        holder.textView.text = listOfJoke[position].name()
+        //  holder.textView.text = listOfJoke[position].name()
     }
 
     override fun getItemCount(): Int {
