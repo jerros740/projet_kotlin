@@ -1,3 +1,4 @@
 <resources>
-    <string name="app_name">projet_kotlin</string>
+    <string name="app_name">Chuck Norris</string>
+    <string name="element_text">test</string>
 </resources>
