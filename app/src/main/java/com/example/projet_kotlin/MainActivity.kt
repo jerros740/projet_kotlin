@@ -24,9 +24,7 @@ class MainActivity : AppCompatActivity() {
         // Affichage de la requête
         retrofitData
             .subscribeOn(Schedulers.io())
-            .subscribe { result -> println(result) }
-
-
+            .subscribe{ result -> println(result) }
     }
 
 
