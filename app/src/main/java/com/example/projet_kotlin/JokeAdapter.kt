@@ -12,10 +12,10 @@ import androidx.recyclerview.widget.RecyclerView
 class JokeAdapter(jokes :List<Joke>, context: Context) : RecyclerView.Adapter<JokeAdapter.ViewHolder>() {
 
     private var context: Context? = null
-    var listOfJoke = listOf<Joke>()
+    var listOfJoke = mutableListOf<Joke>()
     init
     {
-        this.listOfJoke = jokes
+        this.listOfJoke = jokes as MutableList<Joke>
         this.context = context
     }
 
@@ -42,4 +42,9 @@ class JokeAdapter(jokes :List<Joke>, context: Context) : RecyclerView.Adapter<Jo
         return listOfJoke.size
     }
 
+    fun addItem(joke : Joke)
+    {
+        listOfJoke.add(joke)
+        this.notifyItemInserted(getItemCount() - 1);
+    }
 }
