@@ -9,7 +9,7 @@ class JokeApiServiceFactory
     fun getJokeApiService(): JokeApiService
     {
         val retrofit = Retrofit.Builder()
-            .baseUrl("https://api.chucknorris.io/jokes/random/")
+            .baseUrl("https://api.chucknorris.io/jokes/")
             .addConverterFactory(GsonConverterFactory.create())
             .addCallAdapterFactory(RxJava2CallAdapterFactory.create())
             .build()

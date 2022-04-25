@@ -4,7 +4,7 @@ import kotlinx.serialization.*
 
 @Serializable
 data class Joke(
-    val categories: List<String>, @SerialName(value ="created_at") val createdAt: String, @SerialName(value ="icon_url") val iconUrl: String, val id:String, @SerialName(value ="updated_at") val updatedAt: String, val url:String,
+    val categories: List<String>,  val created_at: String, val icon_url: String, val id:String, val updated_at: String, val url:String,
     val value: String)
 
 
