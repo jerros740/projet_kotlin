@@ -32,7 +32,7 @@ class MainActivity : AppCompatActivity() {
         setListener()
         setRecycler(list,context)
 
-        addJoke()
+        addJokes(10)
     }
 
     override fun onDestroy() {
@@ -40,22 +40,33 @@ class MainActivity : AppCompatActivity() {
         compositeDisposable?.dispose()
     }
 
-    fun addJoke() {
+    /**
+     * @desc Adding jokes to the recycler view
+     * @param n - Number of jokes to add
+     */
+    fun addJokes(n : Long) {
         var loadingProgressBar = findViewById<ProgressBar>(R.id.loading)
         val retrofitData: Observable<Joke> = jokeFactory.giveMeAJoke()
+
         loadingProgressBar.visibility = View.VISIBLE
         var disposable = retrofitData
             .subscribeOn(Schedulers.io())
+            .repeat(n)
             .observeOn(AndroidSchedulers.mainThread())
-            .subscribe{ result -> var joke = result
+            .subscribe {
+                result -> var joke = result
                 adapter?.addItem(joke)
-                loadingProgressBar.visibility = View.INVISIBLE
             }
+        loadingProgressBar.visibility = View.INVISIBLE
 
-        // Add to disposable when creating view
         compositeDisposable?.add(disposable)
     }
 
+    /**
+     * @desc Setting the recycler view
+     * @param list - List of jokes to put in the recycler view
+     * @param context - Context of the activity
+     */
     fun setRecycler(list: List<Joke>, context: Context) {
         adapter = JokeAdapter(list,context)
         var recyclerview = findViewById<RecyclerView>(R.id.recyclerViewJokes)
@@ -65,11 +76,14 @@ class MainActivity : AppCompatActivity() {
         recyclerview.adapter = adapter
     }
 
+    /**
+    * @desc Setting all the listener of the activity
+    */
     fun setListener() {
         var btnAddJoke = findViewById<Button>(R.id.btnAddJoke)
         btnAddJoke.setOnClickListener(object : View.OnClickListener {
             override fun onClick(v: View?) {
-                addJoke()
+                addJokes(1)
             }
         })
     }
