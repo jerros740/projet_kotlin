@@ -3,6 +3,7 @@ package com.example.projet_kotlin
 import android.content.Context
 import android.os.Build
 import android.os.Bundle
+import android.util.Log
 import android.view.View
 import android.widget.Button
 import android.widget.ProgressBar
@@ -56,8 +57,9 @@ class MainActivity : AppCompatActivity() {
             .subscribe {
                 result -> var joke = result
                 adapter?.addItem(joke)
+                loadingProgressBar.visibility = View.INVISIBLE
             }
-        loadingProgressBar.visibility = View.INVISIBLE
+
 
         compositeDisposable?.add(disposable)
     }
@@ -80,10 +82,13 @@ class MainActivity : AppCompatActivity() {
     * @desc Setting all the listener of the activity
     */
     fun setListener() {
-        var btnAddJoke = findViewById<Button>(R.id.btnAddJoke)
-        btnAddJoke.setOnClickListener(object : View.OnClickListener {
-            override fun onClick(v: View?) {
-                addJokes(1)
+        var recyclerView = findViewById<RecyclerView>(R.id.recyclerViewJokes)
+        recyclerView.addOnScrollListener(object : RecyclerView.OnScrollListener() {
+            override fun onScrollStateChanged(recyclerView: RecyclerView, newState: Int) {
+                super.onScrollStateChanged(recyclerView, newState)
+                if (!recyclerView.canScrollVertically(1) && newState == RecyclerView.SCROLL_STATE_IDLE) {
+                    addJokes(10)
+                }
             }
         })
     }
