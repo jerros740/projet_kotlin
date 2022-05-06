@@ -12,7 +12,7 @@ import androidx.recyclerview.widget.RecyclerView
 
 class JokeAdapter(jokes :List<Joke>, context: Context) : RecyclerView.Adapter<JokeAdapter.ViewHolder>() {
 
-    private var context: Context? = null
+    private var context: Context
     var listOfJoke = mutableListOf<Joke>()
 
     init
@@ -27,10 +27,9 @@ class JokeAdapter(jokes :List<Joke>, context: Context) : RecyclerView.Adapter<Jo
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
-        val inflater = LayoutInflater.from(this.context)
-        val view = inflater.inflate(R.layout.test, parent, false)
+        val jokeView:JokeView = JokeView(this.context)
 
-        return ViewHolder(view)
+        return ViewHolder(jokeView)
     }
 
     @RequiresApi(Build.VERSION_CODES.N)
