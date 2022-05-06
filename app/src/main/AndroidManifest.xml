@@ -12,7 +12,6 @@
         android:theme="@style/Theme.Projet_kotlin">
         <activity android:name=".MainActivity"
             android:exported="true"
-            android:screenOrientation="portrait"
             android:configChanges="orientation|keyboardHidden">
             >
 
