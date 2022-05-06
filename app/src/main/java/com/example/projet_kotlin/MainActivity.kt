@@ -3,9 +3,7 @@ package com.example.projet_kotlin
 import android.content.Context
 import android.os.Build
 import android.os.Bundle
-import android.util.Log
 import android.view.View
-import android.widget.Button
 import android.widget.ProgressBar
 import androidx.annotation.RequiresApi
 import androidx.appcompat.app.AppCompatActivity
@@ -20,20 +18,23 @@ class MainActivity : AppCompatActivity() {
     private var compositeDisposable: CompositeDisposable? = null
     private var adapter: JokeAdapter? = null
     private var jokeFactory = JokeApiServiceFactory().getJokeApiService()
+    private var list:java.util.ArrayList<Joke> = ArrayList()
 
 
     @RequiresApi(Build.VERSION_CODES.N)
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-
-        val context = this
-        val list = mutableListOf<Joke>()
-
         setContentView(R.layout.activity_main)
+        var loadingProgressBar = findViewById<ProgressBar>(R.id.loading)
+        loadingProgressBar.visibility = View.INVISIBLE
         setListener()
-        setRecycler(list,context)
 
-        addJokes(10)
+        if (savedInstanceState == null) {
+            val context = this
+            setRecycler(list,context)
+            addJokes(10)
+        }
+
     }
 
     override fun onDestroy() {
@@ -41,14 +42,25 @@ class MainActivity : AppCompatActivity() {
         compositeDisposable?.dispose()
     }
 
+    override fun onSaveInstanceState(outState: Bundle) {
+        super.onSaveInstanceState(outState)
+        outState.putSerializable("ArrayList<Joke>",this.list)
+    }
+
+    override fun onRestoreInstanceState(savedInstanceState: Bundle) {
+        super.onRestoreInstanceState(savedInstanceState)
+        val context = this
+        this.list = savedInstanceState.getSerializable("ArrayList<Joke>") as java.util.ArrayList<Joke>
+        setRecycler(list,context)
+    }
+
     /**
      * @desc Adding jokes to the recycler view
      * @param n - Number of jokes to add
      */
     fun addJokes(n : Long) {
-        var loadingProgressBar = findViewById<ProgressBar>(R.id.loading)
         val retrofitData: Observable<Joke> = jokeFactory.giveMeAJoke()
-
+        var loadingProgressBar = findViewById<ProgressBar>(R.id.loading)
         loadingProgressBar.visibility = View.VISIBLE
         var disposable = retrofitData
             .subscribeOn(Schedulers.io())
@@ -69,7 +81,7 @@ class MainActivity : AppCompatActivity() {
      * @param list - List of jokes to put in the recycler view
      * @param context - Context of the activity
      */
-    fun setRecycler(list: List<Joke>, context: Context) {
+    private fun setRecycler(list: java.util.ArrayList<Joke>, context: Context) {
         adapter = JokeAdapter(list,context)
         var recyclerview = findViewById<RecyclerView>(R.id.recyclerViewJokes)
 
@@ -81,7 +93,7 @@ class MainActivity : AppCompatActivity() {
     /**
     * @desc Setting all the listener of the activity
     */
-    fun setListener() {
+    private fun setListener() {
         var recyclerView = findViewById<RecyclerView>(R.id.recyclerViewJokes)
         recyclerView.addOnScrollListener(object : RecyclerView.OnScrollListener() {
             override fun onScrollStateChanged(recyclerView: RecyclerView, newState: Int) {
