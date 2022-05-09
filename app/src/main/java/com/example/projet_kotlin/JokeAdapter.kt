@@ -1,10 +1,12 @@
 package com.example.projet_kotlin
 
+import android.content.ContentValues.TAG
 import android.content.Context
 import android.os.Build
-import android.view.LayoutInflater
+import android.util.Log
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Button
 import android.widget.TextView
 import androidx.annotation.RequiresApi
 import androidx.recyclerview.widget.RecyclerView
@@ -24,10 +26,22 @@ class JokeAdapter(jokes :List<Joke>, context: Context) : RecyclerView.Adapter<Jo
     class ViewHolder(view: View) : RecyclerView.ViewHolder(view)
     {
         val textView: TextView = view.findViewById(R.id.textView)
+
+        init {
+            val btnShare: Button = view.findViewById(R.id.btnShare)
+            val btnStar: Button = view.findViewById(R.id.btnStar)
+            btnShare.setOnClickListener(View.OnClickListener { view ->
+                Log.d(TAG, "Share")
+            })
+            btnStar.setOnClickListener(View.OnClickListener { view ->
+                Log.d(TAG, "Star")
+            })
+        }
+
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
-        val jokeView:JokeView = JokeView(this.context)
+        val jokeView = JokeView(this.context)
 
         return ViewHolder(jokeView)
     }
