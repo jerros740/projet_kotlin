@@ -17,7 +17,7 @@
 
 
     <TextView
-        android:id="@+id/textView"
+        android:id="@+id/txtViewJoke"
         android:layout_width="281dp"
         android:layout_height="match_parent"
         android:justificationMode="inter_word"
@@ -30,26 +30,29 @@
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintVertical_bias="0.0" />
 
-    <Button
+    <ImageButton
         android:id="@+id/btnShare"
-        android:layout_width="30dp"
-        android:layout_height="20dp"
+        android:layout_width="31dp"
+        android:layout_height="30dp"
         android:layout_marginStart="32dp"
-        android:background="@android:drawable/ic_menu_share"
+        android:background="@color/dark_purple"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintStart_toEndOf="@+id/textView"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintStart_toEndOf="@+id/txtViewJoke"
+        app:layout_constraintTop_toTopOf="parent"
+        app:srcCompat="@android:drawable/ic_menu_share" />
 
-    <Button
+
+    <ImageButton
         android:id="@+id/btnStar"
-        android:layout_width="30dp"
-        android:layout_height="20dp"
-        android:background="@android:drawable/star_big_off"
+        android:layout_width="28dp"
+        android:layout_height="28dp"
+        android:background="@color/dark_purple"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.644"
         app:layout_constraintStart_toEndOf="@+id/btnShare"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toTopOf="parent"
+        app:srcCompat="@android:drawable/btn_star_big_off" />
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>
