@@ -7,12 +7,14 @@ import android.view.View
 import android.widget.ProgressBar
 import androidx.annotation.RequiresApi
 import androidx.appcompat.app.AppCompatActivity
+import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import io.reactivex.Observable
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.CompositeDisposable
 import io.reactivex.schedulers.Schedulers
+
 
 class MainActivity : AppCompatActivity() {
     private var compositeDisposable: CompositeDisposable? = null
@@ -88,6 +90,8 @@ class MainActivity : AppCompatActivity() {
         recyclerview.layoutManager = LinearLayoutManager(this)
         // Création du recycler view
         recyclerview.adapter = adapter
+        val itemTouchHelper = JokeTouchHelper(adapter!!)
+        itemTouchHelper.attachToRecyclerView(recyclerview)
     }
 
     /**
