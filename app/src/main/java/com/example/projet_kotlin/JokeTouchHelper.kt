@@ -2,7 +2,9 @@ package com.example.projet_kotlin
 
 import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.RecyclerView
-
+/**
+ * This is our class to handle what we will do when we move(up/dowb) or swipe(left/right)
+ */
 class JokeTouchHelper(adapter: JokeAdapter) : ItemTouchHelper(
     object : ItemTouchHelper.SimpleCallback(
         UP or DOWN,
@@ -15,7 +17,7 @@ class JokeTouchHelper(adapter: JokeAdapter) : ItemTouchHelper(
             target: RecyclerView.ViewHolder
         ) : Boolean
         {
-            var list: MutableList<Joke> = adapter.listOfJoke
+            var list: MutableList<Joke> = adapter.jokeList
 
             val from = viewHolder.adapterPosition
             val to = target.adapterPosition
