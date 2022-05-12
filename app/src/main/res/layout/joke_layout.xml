@@ -30,28 +30,29 @@
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintVertical_bias="0.0" />
 
+
     <ImageButton
         android:id="@+id/btnShare"
-        android:layout_width="31dp"
-        android:layout_height="30dp"
-        android:layout_marginStart="32dp"
+        android:layout_width="45dp"
+        android:layout_height="44dp"
+        android:layout_marginStart="20dp"
         android:background="@color/dark_purple"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toEndOf="@+id/txtViewJoke"
         app:layout_constraintTop_toTopOf="parent"
         app:srcCompat="@android:drawable/ic_menu_share" />
 
-
     <ImageButton
         android:id="@+id/btnStar"
-        android:layout_width="28dp"
-        android:layout_height="28dp"
+        android:layout_width="46dp"
+        android:layout_height="43dp"
         android:background="@color/dark_purple"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.644"
+        app:layout_constraintHorizontal_bias="0.611"
         app:layout_constraintStart_toEndOf="@+id/btnShare"
         app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.481"
         app:srcCompat="@android:drawable/btn_star_big_off" />
 
 
