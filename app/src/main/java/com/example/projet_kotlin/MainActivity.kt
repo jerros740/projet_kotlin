@@ -14,13 +14,14 @@ import io.reactivex.Observable
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.CompositeDisposable
 import io.reactivex.schedulers.Schedulers
-
-
+/**
+ * This is our main activity.
+ */
 class MainActivity : AppCompatActivity() {
     private var compositeDisposable: CompositeDisposable? = null
     private var adapter: JokeAdapter? = null
     private var jokeFactory = JokeApiServiceFactory().getJokeApiService()
-    private var list:java.util.ArrayList<Joke> = ArrayList()
+    private var jokesList:java.util.ArrayList<Joke> = ArrayList()
 
 
     @RequiresApi(Build.VERSION_CODES.N)
@@ -33,7 +34,11 @@ class MainActivity : AppCompatActivity() {
 
         if (savedInstanceState == null) {
             val context = this
-            setRecycler(list,context)
+
+            // Retrieve saved jokes
+            this.jokesList = JokeMemory().retrieveAll(context)
+
+            setRecycler(this.jokesList,context)
             addJokes(10)
         }
 
@@ -46,14 +51,14 @@ class MainActivity : AppCompatActivity() {
 
     override fun onSaveInstanceState(outState: Bundle) {
         super.onSaveInstanceState(outState)
-        outState.putSerializable("ArrayList<Joke>",this.list)
+        outState.putSerializable("ArrayList<Joke>",this.jokesList)
     }
 
     override fun onRestoreInstanceState(savedInstanceState: Bundle) {
         super.onRestoreInstanceState(savedInstanceState)
         val context = this
-        this.list = savedInstanceState.getSerializable("ArrayList<Joke>") as java.util.ArrayList<Joke>
-        setRecycler(list,context)
+        this.jokesList = savedInstanceState.getSerializable("ArrayList<Joke>") as java.util.ArrayList<Joke>
+        setRecycler(this.jokesList,context)
     }
 
     /**
@@ -88,8 +93,11 @@ class MainActivity : AppCompatActivity() {
         var recyclerview = findViewById<RecyclerView>(R.id.recyclerViewJokes)
 
         recyclerview.layoutManager = LinearLayoutManager(this)
-        // Création du recycler view
+
+        // Creation of recycler view
         recyclerview.adapter = adapter
+
+        // Adding features : moving & swiping
         val itemTouchHelper = JokeTouchHelper(adapter!!)
         itemTouchHelper.attachToRecyclerView(recyclerview)
     }
