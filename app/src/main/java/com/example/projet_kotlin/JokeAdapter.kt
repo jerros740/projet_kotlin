@@ -3,57 +3,33 @@ package com.example.projet_kotlin
 import android.content.ContentValues.TAG
 import android.content.Context
 import android.content.Intent
+import android.graphics.drawable.Drawable
 import android.os.Build
 import android.util.Log
 import android.view.ViewGroup
+import android.widget.Button
 import android.widget.ImageButton
 import android.widget.TextView
 import androidx.annotation.RequiresApi
 import androidx.core.content.ContextCompat.startActivity
+import androidx.core.graphics.drawable.toDrawable
 import androidx.recyclerview.widget.RecyclerView
+import kotlin.math.log
 
-
+/**
+ * Adapter pattern used for the recycler view
+ */
 class JokeAdapter(jokes :List<Joke>, context: Context) : RecyclerView.Adapter<JokeAdapter.ViewHolder>() {
 
-    private var context: Context
-    var listOfJoke = mutableListOf<Joke>()
-
-    init
-    {
-        this.listOfJoke = jokes as MutableList<Joke>
-        this.context = context
-    }
+    private var context: Context = context
+    private val jokeMemory : JokeMemory = JokeMemory()
+    private val favoritesJokeList = jokeMemory.retrieveAll(context)
+    var jokeList = jokes as MutableList<Joke>
 
     class ViewHolder(view: JokeView) : RecyclerView.ViewHolder(view)
     {
         val textView: TextView = view.findViewById(R.id.txtViewJoke)
-        private val context = view.context
-        init {
-
-            val btnShare: ImageButton = view.findViewById(R.id.btnShare)
-            btnShare.setOnClickListener { view ->
-                val sendIntent: Intent = Intent().apply {
-                    action = Intent.ACTION_SEND
-                    putExtra(Intent.EXTRA_TEXT, textView.text)
-                    type = "text/plain"
-                }
-
-                val shareIntent = Intent.createChooser(sendIntent, "Partager")
-                context.startActivity(shareIntent)
-            }
-
-            val btnStar: ImageButton = view.findViewById(R.id.btnStar)
-            var on: Boolean = false
-            btnStar.setOnClickListener {
-                on = if(!on) {
-                    btnStar.setImageResource(android.R.drawable.btn_star_big_on)
-                    true
-                } else {
-                    btnStar.setImageResource(android.R.drawable.btn_star_big_off)
-                    false
-                }
-            }
-        }
+        val jokeView: JokeView = view
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
@@ -64,11 +40,23 @@ class JokeAdapter(jokes :List<Joke>, context: Context) : RecyclerView.Adapter<Jo
 
     @RequiresApi(Build.VERSION_CODES.N)
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
-          holder.textView.text = listOfJoke[position].value
+        holder.textView.tag = jokeList[position]
+
+        val drawableStar_on : Int = android.R.drawable.btn_star_big_on
+        val drawableStar_off : Int = android.R.drawable.btn_star_big_off
+        val drawableShare : Int = android.R.drawable.ic_menu_share
+
+        if (holder.textView.tag as Joke in favoritesJokeList) {
+            holder.jokeView.setupView(JokeView.Model(jokeList[position],drawableStar_on,drawableShare))
+            holder.jokeView.on = true
+        }
+        else {
+            holder.jokeView.setupView(JokeView.Model(jokeList[position],drawableStar_off,drawableShare))
+        }
     }
 
     override fun getItemCount(): Int {
-        return listOfJoke.size
+        return jokeList.size
     }
 
     /**
@@ -77,7 +65,7 @@ class JokeAdapter(jokes :List<Joke>, context: Context) : RecyclerView.Adapter<Jo
      */
     fun addItem(joke : Joke)
     {
-        listOfJoke.add(joke)
+        jokeList.add(joke)
         this.notifyItemInserted(getItemCount() - 1);
     }
 
@@ -87,8 +75,8 @@ class JokeAdapter(jokes :List<Joke>, context: Context) : RecyclerView.Adapter<Jo
      */
     fun removeItem(position : Int)
     {
-        listOfJoke.removeAt(position)
+        jokeList.removeAt(position)
         notifyItemRemoved(position)
-        notifyItemRangeChanged(position, listOfJoke.size)
+        notifyItemRangeChanged(position, jokeList.size)
     }
 }
