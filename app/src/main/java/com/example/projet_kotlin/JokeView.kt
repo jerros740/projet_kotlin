@@ -1,38 +1,90 @@
 package com.example.projet_kotlin
 
 import android.content.Context
+import android.content.Intent
+import android.graphics.drawable.Drawable
 import android.widget.Button
 import android.widget.ImageButton
 import android.widget.TextView
 import androidx.constraintlayout.widget.ConstraintLayout
 import org.w3c.dom.Text
 
-
+/**
+ * This is our class where we will initialize and make change to our view (Joke + buttons(star/share))
+ */
 class JokeView constructor(context: Context) : ConstraintLayout(context) {
 
-    init {
-        inflate(getContext(), R.layout.joke_layout, this)
+    // Boolean to know if star button is on/off (can be changed if joke is already saved)
+    var on: Boolean = false
 
+    init {
+        inflate(context, R.layout.joke_layout, this)
+        initButtonListener()
     }
 
-    data class Model(val txtJoke: String = "", val imgBtnShare: Int = -1, val imgBtnStar: Int = -1)
+    /**
+     * @desc Data class for all the view component
+     * @param joke - Joke object
+     * @param imgBtnStar - value for the image ressource of the star button
+     * @param imgBtnShare - value for the image ressource of the share button
+     */
+    data class Model(val joke: Joke, val imgBtnStar: Int, val imgBtnShare: Int)
 
-    /*
+    /**
+     * @desc Changing model of view component
+     * @param model - New model for the all the components (text, image button)
+     */
     fun setupView(model : Model)
     {
         val txtViewJoke:TextView = findViewById(R.id.txtViewJoke)
         val btnShare: ImageButton = findViewById(R.id.btnShare)
         val btnStar: ImageButton = findViewById(R.id.btnStar)
 
-        var txtJoke = model.txtJoke
+        var joke = model.joke
         var drawableShare = model.imgBtnShare
         var drawableStar = model.imgBtnStar
 
-        if(txtJoke != "")
-            txtViewJoke.setText(txtJoke)
-        if(drawableShare != -1)
-            btnShare.setImageResource(drawableShare)
-        if(drawableStar != -1)
-            btnStar.setImageResource(drawableStar)
-    }*/
+        txtViewJoke.setText(joke.value)
+        btnShare.setImageResource(drawableShare)
+        btnStar.setImageResource(drawableStar)
+    }
+
+    /**
+     * @desc Initialize all button listener
+     */
+    fun initButtonListener() {
+        val jokeMemory: JokeMemory = JokeMemory()
+        val txtViewJoke:TextView = findViewById(R.id.txtViewJoke)
+
+        // Handling event for sharing button
+        val btnShare: ImageButton = findViewById(R.id.btnShare)
+        btnShare.setOnClickListener {
+            val sendIntent: Intent = Intent().apply {
+                action = Intent.ACTION_SEND
+                putExtra(Intent.EXTRA_TEXT, txtViewJoke.text)
+                type = "text/plain"
+            }
+            val shareIntent = Intent.createChooser(sendIntent, "Partager")
+            context.startActivity(shareIntent)
+        }
+
+        // Handling event for star button
+        val btnStar: ImageButton = findViewById(R.id.btnStar)
+
+        btnStar.setOnClickListener {
+            val value : Joke = txtViewJoke.tag as Joke
+            val key : String = value.id
+
+            on = if(!on) {
+                btnStar.setImageResource(android.R.drawable.btn_star_big_on)
+                jokeMemory.save(context,key,value)
+                true
+            } else {
+                btnStar.setImageResource(android.R.drawable.btn_star_big_off)
+                jokeMemory.delete(context,key)
+                false
+            }
+        }
+    }
+
 }
