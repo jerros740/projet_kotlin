@@ -2,12 +2,9 @@ package com.example.projet_kotlin
 
 import android.content.Context
 import android.content.Intent
-import android.graphics.drawable.Drawable
-import android.widget.Button
 import android.widget.ImageButton
 import android.widget.TextView
 import androidx.constraintlayout.widget.ConstraintLayout
-import org.w3c.dom.Text
 
 /**
  * This is our class where we will initialize and make change to our view (Joke + buttons(star/share))
@@ -40,11 +37,11 @@ class JokeView constructor(context: Context) : ConstraintLayout(context) {
         val btnShare: ImageButton = findViewById(R.id.btnShare)
         val btnStar: ImageButton = findViewById(R.id.btnStar)
 
-        var joke = model.joke
-        var drawableShare = model.imgBtnShare
-        var drawableStar = model.imgBtnStar
+        val joke = model.joke
+        val drawableShare = model.imgBtnShare
+        val drawableStar = model.imgBtnStar
 
-        txtViewJoke.setText(joke.value)
+        txtViewJoke.text = joke.value
         btnShare.setImageResource(drawableShare)
         btnStar.setImageResource(drawableStar)
     }
@@ -53,7 +50,7 @@ class JokeView constructor(context: Context) : ConstraintLayout(context) {
      * @desc Initialize all button listener
      */
     fun initButtonListener() {
-        val jokeMemory: JokeMemory = JokeMemory()
+        val jokeMemory = JokeMemory()
         val txtViewJoke:TextView = findViewById(R.id.txtViewJoke)
 
         // Handling event for sharing button

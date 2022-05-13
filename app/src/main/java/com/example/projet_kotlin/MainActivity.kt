@@ -3,12 +3,8 @@ package com.example.projet_kotlin
 import android.content.Context
 import android.os.Build
 import android.os.Bundle
-import android.view.View
-import android.widget.ProgressBar
 import androidx.annotation.RequiresApi
 import androidx.appcompat.app.AppCompatActivity
-import androidx.core.content.ContextCompat
-import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
@@ -30,7 +26,7 @@ class MainActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
-        var loadingProgressBar = findViewById<SwipeRefreshLayout>(R.id.swipe_refresh_layout)
+        val loadingProgressBar = findViewById<SwipeRefreshLayout>(R.id.swipe_refresh_layout)
         loadingProgressBar.isRefreshing = false
         setListener()
 
@@ -69,14 +65,14 @@ class MainActivity : AppCompatActivity() {
      */
     fun addJokes(n : Long) {
         val retrofitData: Observable<Joke> = jokeFactory.giveMeAJoke()
-        var loadingProgressBar = findViewById<SwipeRefreshLayout>(R.id.swipe_refresh_layout)
+        val loadingProgressBar = findViewById<SwipeRefreshLayout>(R.id.swipe_refresh_layout)
         loadingProgressBar.isRefreshing = true
-        var disposable = retrofitData
+        val disposable = retrofitData
             .subscribeOn(Schedulers.io())
             .repeat(n)
             .observeOn(AndroidSchedulers.mainThread())
             .subscribe {
-                result -> var joke = result
+                joke ->
                 adapter?.addItem(joke)
                 loadingProgressBar.isRefreshing = false
             }
@@ -92,7 +88,7 @@ class MainActivity : AppCompatActivity() {
      */
     private fun setRecycler(list: java.util.ArrayList<Joke>, context: Context) {
         adapter = JokeAdapter(list,context)
-        var recyclerview = findViewById<RecyclerView>(R.id.recyclerViewJokes)
+        val recyclerview = findViewById<RecyclerView>(R.id.recyclerViewJokes)
 
         recyclerview.layoutManager = LinearLayoutManager(this)
 
@@ -108,7 +104,7 @@ class MainActivity : AppCompatActivity() {
     * @desc Setting all the listener of the activity
     */
     private fun setListener() {
-        var refreshLayout = findViewById<SwipeRefreshLayout>(R.id.swipe_refresh_layout)
+        val refreshLayout = findViewById<SwipeRefreshLayout>(R.id.swipe_refresh_layout)
         refreshLayout.setColorSchemeResources(R.color.dark_purple)
         refreshLayout.setOnRefreshListener {
             refreshLayout.isRefreshing = true
@@ -117,7 +113,7 @@ class MainActivity : AppCompatActivity() {
             refreshLayout.isRefreshing = false
         }
 
-        var recyclerView = findViewById<RecyclerView>(R.id.recyclerViewJokes)
+        val recyclerView = findViewById<RecyclerView>(R.id.recyclerViewJokes)
         recyclerView.addOnScrollListener(object : RecyclerView.OnScrollListener() {
             override fun onScrollStateChanged(recyclerView: RecyclerView, newState: Int) {
                 super.onScrollStateChanged(recyclerView, newState)

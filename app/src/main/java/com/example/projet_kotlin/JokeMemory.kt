@@ -21,8 +21,8 @@ class JokeMemory {
         val gson = Gson()
         val json = gson.toJson(joke)
 
-        editor.putString(key, json);
-        editor.apply();
+        editor.putString(key, json)
+        editor.apply()
     }
 
     /**
@@ -40,14 +40,13 @@ class JokeMemory {
     /**
      * @desc Getting all the jokes we stored
      * @param context - context of the application
-     * @param key - unique key(string) of the joke we want to delete
      * @return ArrayList<Joke>
      */
     fun retrieveAll(context : Context): ArrayList<Joke>{
         val favorites : Map<String, *> = context.getSharedPreferences("chuck",Context.MODE_PRIVATE).all
         val arrayList : ArrayList<Joke> = ArrayList()
 
-        for ((key,value) in favorites.entries) {
+        for ((_,value) in favorites.entries) {
             val joke:Joke = Gson().fromJson(value as String,Joke::class.java)
             arrayList.add(joke)
         }

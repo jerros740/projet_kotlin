@@ -17,7 +17,7 @@ class JokeTouchHelper(adapter: JokeAdapter) : ItemTouchHelper(
             target: RecyclerView.ViewHolder
         ) : Boolean
         {
-            var list: MutableList<Joke> = adapter.jokeList
+            val list: MutableList<Joke> = adapter.jokeList
 
             val from = viewHolder.adapterPosition
             val to = target.adapterPosition
@@ -32,7 +32,7 @@ class JokeTouchHelper(adapter: JokeAdapter) : ItemTouchHelper(
         }
 
         override fun onSwiped(viewHolder: RecyclerView.ViewHolder, swipeDir: Int) {
-            val position = viewHolder.adapterPosition;
+            val position = viewHolder.adapterPosition
             adapter.removeItem(position)
         }
     }
