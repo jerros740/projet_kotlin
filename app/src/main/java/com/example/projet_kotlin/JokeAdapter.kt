@@ -23,11 +23,10 @@ class JokeAdapter(jokes :List<Joke>, context: Context) : RecyclerView.Adapter<Jo
 
     private var context: Context = context
     private val jokeMemory : JokeMemory = JokeMemory()
-    private val favoritesJokeList = jokeMemory.retrieveAll(context)
+    private var favoritesJokeList = jokeMemory.retrieveAll(context)
     var jokeList = jokes as MutableList<Joke>
 
-    class ViewHolder(view: JokeView) : RecyclerView.ViewHolder(view)
-    {
+    class ViewHolder(view: JokeView) : RecyclerView.ViewHolder(view) {
         val textView: TextView = view.findViewById(R.id.txtViewJoke)
         val jokeView: JokeView = view
     }
@@ -63,8 +62,7 @@ class JokeAdapter(jokes :List<Joke>, context: Context) : RecyclerView.Adapter<Jo
      * @desc Add item to the recycler view
      * @param joke - Joke to add to the recycler view
      */
-    fun addItem(joke : Joke)
-    {
+    fun addItem(joke : Joke) {
         jokeList.add(joke)
         this.notifyItemInserted(getItemCount() - 1);
     }
@@ -73,10 +71,19 @@ class JokeAdapter(jokes :List<Joke>, context: Context) : RecyclerView.Adapter<Jo
      * @desc Remove item to the recycler view
      * @param position - Remove the joke on a particular position
      */
-    fun removeItem(position : Int)
-    {
+    fun removeItem(position : Int) {
         jokeList.removeAt(position)
         notifyItemRemoved(position)
         notifyItemRangeChanged(position, jokeList.size)
+    }
+
+    /**
+     * @desc Replace all our joke with new jokes
+     * @param position - Remove the joke on a particular position
+     */
+    fun replaceAll(pJokeList : ArrayList<Joke>) {
+        this.favoritesJokeList = jokeMemory.retrieveAll(context)
+        this.jokeList = pJokeList
+        notifyDataSetChanged();
     }
 }
